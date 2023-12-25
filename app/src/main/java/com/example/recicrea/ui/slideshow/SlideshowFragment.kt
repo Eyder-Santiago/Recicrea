@@ -24,6 +24,8 @@ import com.example.recicrea.R
 import com.example.recicrea.databinding.FragmentSlideshowBinding
 import java.io.File
 import java.io.FileOutputStream
+import android.app.AlertDialog
+import kotlin.random.Random
 
 
 class SlideshowFragment : Fragment() {
@@ -72,6 +74,18 @@ class SlideshowFragment : Fragment() {
             outStream.flush()
             outStream.close()
             Toast.makeText(activity, "Archivo guardado exitosamente", Toast.LENGTH_LONG).show()
+
+            val materials = arrayOf("Aluminio", "Metal", "Vidrio", "Cartón")
+            val randomMaterial = materials[Random.nextInt(materials.size)]
+            val randomPercentage = Random.nextInt(100)
+
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Porcentaje de Material")
+            builder.setMessage("El material es $randomMaterial y el porcentaje es $randomPercentage%")
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+
+
+            builder.show()
         }
 
         return root
