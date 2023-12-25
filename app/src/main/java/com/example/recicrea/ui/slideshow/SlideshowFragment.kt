@@ -76,29 +76,32 @@ class SlideshowFragment : Fragment() {
             outStream.close()
             Toast.makeText(activity, "Archivo guardado exitosamente", Toast.LENGTH_LONG).show()
 
-            val materials = arrayOf("Plastico", "Aluminio", "Tela", "Carton")
-            val images = arrayOf(R.drawable.avatar_4, R.drawable.avatar_5, R.drawable.avatar_6,
-                R.drawable.avatar_7, R.drawable.avatar_8, R.drawable.avatar_9, R.drawable.avatar_10,
-                R.drawable.avatar_11, R.drawable.avatar_12, R.drawable.avatar_13, R.drawable.avatar_14,
-                R.drawable.avatar_15, R.drawable.avatar_16)
+            val materials = arrayOf("Plástico", "Cartón", "Aluminio", "Tela")
+            val images = arrayOf(
+                arrayOf(R.drawable.avatar_1, R.drawable.avatar_4, R.drawable.avatar_5, R.drawable.avatar_6, R.drawable.avatar_9, R.drawable.avatar_10, R.drawable.avatar_11, R.drawable.avatar_13),
+                arrayOf(R.drawable.avatar_2, R.drawable.avatar_14),
+                arrayOf(R.drawable.avatar_2, R.drawable.avatar_3, R.drawable.avatar_7, R.drawable.avatar_8),
+                arrayOf(R.drawable.avatar_5, R.drawable.avatar_11)
+            )
             val randomIndex = Random.nextInt(materials.size)
             val randomMaterial = materials[randomIndex]
-            val randomImage = images[randomIndex]
+            val randomImageArray = images[randomIndex]
+            val randomImage = randomImageArray[Random.nextInt(randomImageArray.size)]
             val randomPercentage = Random.nextInt(100)
-
 
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("Porcentaje de Material")
             builder.setMessage("El material es $randomMaterial y el porcentaje es $randomPercentage%")
             builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
 
+            val alertDialog = builder.create()
+            alertDialog.show()
+
             val intent = Intent(context, FullScreenImageActivity::class.java)
             intent.putExtra("IMAGE_RES_ID", randomImage)
             startActivity(intent)
 
 
-
-            builder.show()
         }
 
         return root
