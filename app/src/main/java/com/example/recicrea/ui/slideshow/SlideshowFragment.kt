@@ -62,45 +62,51 @@ class SlideshowFragment : Fragment() {
         }
 
         _binding?.btnGuardarCaptura?.setOnClickListener {
-            val drawable = _binding?.imgCapturada?.drawable;
+            val drawable = _binding?.imgCapturada?.drawable
             val bitmap = drawable?.toBitmap(drawable.intrinsicHeight, drawable.intrinsicWidth)
             var outStream: FileOutputStream? = null
 
             val dir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Recicrea")
             dir.mkdirs()
-            val outFile = File(dir, fileName)
-            outStream = FileOutputStream(outFile)
+            val outFile: File
+            if (!fileName.isNullOrEmpty()) {
+                outFile = File(dir, fileName)
+                outStream = FileOutputStream(outFile)
 
-            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outStream)
-            outStream.flush()
-            outStream.close()
-            Toast.makeText(activity, "Archivo guardado exitosamente", Toast.LENGTH_LONG).show()
+                bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outStream)
+                outStream.flush()
+                outStream.close()
+                Toast.makeText(activity, "Archivo guardado exitosamente", Toast.LENGTH_LONG).show()
 
-            val materials = arrayOf("Plástico", "Cartón", "Aluminio", "Tela")
-            val images = arrayOf(
-                arrayOf(R.drawable.avatar_1, R.drawable.avatar_4, R.drawable.avatar_5, R.drawable.avatar_6, R.drawable.avatar_9, R.drawable.avatar_10, R.drawable.avatar_11, R.drawable.avatar_13),
-                arrayOf(R.drawable.avatar_2, R.drawable.avatar_14),
-                arrayOf(R.drawable.avatar_2, R.drawable.avatar_3, R.drawable.avatar_7, R.drawable.avatar_8),
-                arrayOf(R.drawable.avatar_5, R.drawable.avatar_11)
-            )
-            val randomIndex = Random.nextInt(materials.size)
-            val randomMaterial = materials[randomIndex]
-            val randomImageArray = images[randomIndex]
-            val randomImage = randomImageArray[Random.nextInt(randomImageArray.size)]
-            val randomPercentage = Random.nextInt(100)
+                val materials = arrayOf("Plástico", "Cartón", "Aluminio", "Tela")
+                val images = arrayOf(
+                    arrayOf(R.drawable.avatar_1, R.drawable.avatar_4, R.drawable.avatar_5, R.drawable.avatar_6, R.drawable.avatar_9, R.drawable.avatar_10, R.drawable.avatar_11, R.drawable.avatar_13),
+                    arrayOf(R.drawable.avatar_2, R.drawable.avatar_14),
+                    arrayOf(R.drawable.avatar_2, R.drawable.avatar_3, R.drawable.avatar_7, R.drawable.avatar_8),
+                    arrayOf(R.drawable.avatar_5, R.drawable.avatar_11)
+                )
+                val randomIndex = Random.nextInt(materials.size)
+                val randomMaterial = materials[randomIndex]
+                val randomImageArray = images[randomIndex]
+                val randomImage = randomImageArray[Random.nextInt(randomImageArray.size)]
+                val randomPercentage = Random.nextInt(100)
 
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Porcentaje de Material")
-            builder.setMessage("El material es $randomMaterial y el porcentaje es $randomPercentage%")
-            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle("Porcentaje de Material")
+                builder.setMessage("El material es $randomMaterial y el porcentaje es $randomPercentage%")
+                builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
 
-            val alertDialog = builder.create()
-            alertDialog.show()
+                val alertDialog = builder.create()
+                alertDialog.show()
 
-            val intent = Intent(context, FullScreenImageActivity::class.java)
-            intent.putExtra("IMAGE_RES_ID", randomImage)
-            startActivity(intent)
+                val intent = Intent(context, FullScreenImageActivity::class.java)
+                intent.putExtra("IMAGE_RES_ID", randomImage)
+                startActivity(intent)
 
+            } else {
+                // Se maneja si es nulo, no hay imagen
+                Toast.makeText(activity, "No hay imagen capturada, intente tomar una captura", Toast.LENGTH_LONG).show()
+            }
 
         }
 
